@@ -1,3 +1,5 @@
+from importlib import import_module
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -23,4 +25,13 @@ app.add_middleware(
 
 app.add_middleware(DBSessionMiddleware, db=db)
 
+
+def register_subpackages():
+    from main import models
+
+    for m in models.__all__:
+        import_module(f"main.models.{m}")
+
+
+register_subpackages()
 register_error_handlers(app)

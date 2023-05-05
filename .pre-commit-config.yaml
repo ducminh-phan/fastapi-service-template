@@ -39,5 +39,6 @@ repos:
           (?x)(
             ^tests/|
             .secrets.baseline|
-            .env.test
+            .env.test|
+            migrations/versions/
           )
