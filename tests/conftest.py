@@ -46,4 +46,6 @@ async def database():
 
 @pytest.fixture
 def client():
-    return TestClient(app)
+    # Need to enter the context to invoke startup and shutdown events
+    with TestClient(app) as client:
+        yield client
