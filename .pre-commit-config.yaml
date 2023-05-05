@@ -1,0 +1,43 @@
+repos:
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.254'
+    hooks:
+      - id: ruff
+        args:
+          - --fix
+          - --exit-non-zero-on-fix
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.1.1
+    hooks:
+      - id: mypy
+        args:
+          - --no-strict-optional
+          - --ignore-missing-imports
+        additional_dependencies:
+          - types-requests
+          - attrs==22.2.0
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args:
+          - --skip
+          - B101,B105,B107,B301,B403
+        exclude: tests
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args:
+          - --baseline
+          - .secrets.baseline
+        exclude: |
+          (?x)(
+            ^tests/|
+            .secrets.baseline|
+            .env.test
+          )
