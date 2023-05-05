@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from ._config import config
+from .commons.error_handlers import register_error_handlers
 from .controllers import router
 
 app = FastAPI(
@@ -18,3 +19,5 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+register_error_handlers(app)
