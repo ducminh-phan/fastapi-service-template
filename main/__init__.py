@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from ._config import config
+from ._db import DBSessionMiddleware, db
 from .commons.error_handlers import register_error_handlers
 from .controllers import router
 
@@ -19,5 +20,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.add_middleware(DBSessionMiddleware, db=db)
 
 register_error_handlers(app)

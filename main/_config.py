@@ -9,7 +9,8 @@ class Config(BaseSettings):
     LOGGING_LEVEL: int = logging.INFO
 
     SQLALCHEMY_DATABASE_URI: str
-    SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
+    SQLALCHEMY_ENGINE_OPTIONS: dict = {}
+    SQLALCHEMY_ECHO: bool = False
 
     class Config:
         case_sensitive = True

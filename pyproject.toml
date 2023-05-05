@@ -8,11 +8,11 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+SQLAlchemy = { version = "^1.4", extras = ["asyncio"] }
+aiomysql = "^0.1.1"
+alembic = "^1.10.4"
 fastapi = "^0.95.1"
 pydantic = "^1.10.7"
-SQLAlchemy = "^1.4"
-alembic = "^1.10.4"
-pymysql = "^1.0.3"
 python-dotenv = "^1.0.0"
 uvicorn = "^0.22.0"
 
