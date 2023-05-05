@@ -1,7 +1,6 @@
 import secrets
 from contextlib import asynccontextmanager
 from contextvars import ContextVar
-from typing import Any
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -35,7 +34,7 @@ class Database:
     existing one using the async_scoped_session mechanism.
     """
 
-    def __init__(self) -> None:
+    def __init__(self):
         self.request_id_context: ContextVar[str] = ContextVar(
             "request_id_context",
             default="",
@@ -63,7 +62,7 @@ class Database:
             self._scope_func,
         )
 
-    def _scope_func(self) -> str | None:
+    def _scope_func(self) -> str:
         request_id = self.request_id_context.get()
         return request_id
 
@@ -72,7 +71,7 @@ class Database:
         return self.scoped_session()
 
     @asynccontextmanager
-    async def scope(self, **kwargs: Any):
+    async def scope(self):
         """
         Create a new database session (scope).
 
@@ -82,7 +81,7 @@ class Database:
         """
 
         token = self.request_id_context.set(secrets.token_hex())
-        self.scoped_session(**kwargs)
+        self.scoped_session()
 
         yield self
 

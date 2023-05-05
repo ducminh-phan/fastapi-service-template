@@ -1,10 +1,9 @@
 from datetime import datetime
-from typing import Type
 
 from sqlalchemy import Column, DateTime, MetaData
-from sqlalchemy.orm import DeclarativeMeta, declarative_base
+from sqlalchemy.orm import declarative_base
 
-BaseModel: Type[DeclarativeMeta] = declarative_base(
+BaseModel = declarative_base(
     metadata=MetaData(
         naming_convention={
             "pk": "pk_%(table_name)s",
