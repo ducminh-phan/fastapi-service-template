@@ -2,6 +2,7 @@ import asyncio
 from logging.config import fileConfig
 
 from alembic import context
+from alembic.script.write_hooks import register, REVISION_SCRIPT_TOKEN
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
@@ -89,3 +90,15 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
+
+
+@register("shell_script")
+def shell_script(path: str, options: dict, ignore_output: bool = False) -> None:
+    import subprocess
+
+    subprocess.run(
+        [
+            options["entrypoint"],
+            *options["options"].replace(REVISION_SCRIPT_TOKEN, path).split(),
+        ],
+    )

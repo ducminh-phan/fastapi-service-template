@@ -24,7 +24,7 @@ repos:
         args:
           - --skip
           - B101,B105,B107,B301,B403
-        exclude: tests
+        exclude: tests|migrations/env.py
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.4.0
     hooks:
