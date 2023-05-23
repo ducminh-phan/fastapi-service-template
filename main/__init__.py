@@ -10,7 +10,7 @@ from .controllers import router
 
 app = FastAPI(
     redoc_url=None,
-    docs_url=None if config.ENVIRONMENT == "production" else "/docs",
+    docs_url="/docs" if config.ENVIRONMENT == "local" else None,
 )
 
 app.include_router(router)
