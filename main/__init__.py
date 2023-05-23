@@ -7,6 +7,7 @@ from ._config import config
 from ._db import DBSessionMiddleware, db
 from .commons.error_handlers import register_error_handlers
 from .controllers import router
+from .libs.log import AccessLogMiddleware
 
 app = FastAPI(
     redoc_url=None,
@@ -24,6 +25,7 @@ app.add_middleware(
 )
 
 app.add_middleware(DBSessionMiddleware, db=db)
+app.add_middleware(AccessLogMiddleware)
 
 
 def register_subpackages():
