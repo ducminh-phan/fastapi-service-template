@@ -94,9 +94,9 @@ else:
 
 @register("shell_script")
 def shell_script(path: str, options: dict, ignore_output: bool = False) -> None:
-    import subprocess
+    import subprocess  # nosec B404
 
-    subprocess.run(
+    subprocess.run(  # nosec B603
         [
             options["entrypoint"],
             *options["options"].replace(REVISION_SCRIPT_TOKEN, path).split(),

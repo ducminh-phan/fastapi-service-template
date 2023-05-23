@@ -54,3 +54,10 @@ max-complexity = 10
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F401"]
+
+[tool.mypy]
+ignore_missing_imports = true
+strict_optional = true
+
+[tool.bandit]
+skips = ["B101", "B105", "B107", "B301", "B403"]

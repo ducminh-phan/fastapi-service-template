@@ -14,17 +14,16 @@ repos:
     rev: v1.1.1
     hooks:
       - id: mypy
-        args:
-          - --no-strict-optional
-          - --ignore-missing-imports
   - repo: https://github.com/PyCQA/bandit
     rev: 1.7.5
     hooks:
       - id: bandit
         args:
-          - --skip
-          - B101,B105,B107,B301,B403
-        exclude: tests|migrations/env.py
+          - -c
+          - pyproject.toml
+        additional_dependencies:
+          - "bandit[toml]"
+        exclude: tests
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.4.0
     hooks:
