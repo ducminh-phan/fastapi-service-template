@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-SQLAlchemy = { version = "^1.4", extras = ["asyncio"] }
+SQLAlchemy = { version = "^2.0.15", extras = ["asyncio"] }
 aiomysql = "^0.1.1"
 alembic = "^1.10.4"
 fastapi = "^0.95.1"

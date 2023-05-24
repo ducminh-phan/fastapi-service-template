@@ -5,10 +5,8 @@ from contextvars import ContextVar
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_scoped_session,
+    async_sessionmaker,
     create_async_engine,
-)
-from sqlalchemy.orm import (
-    sessionmaker,
 )
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
@@ -43,13 +41,11 @@ class Database:
         self.engine = create_async_engine(
             config.SQLALCHEMY_DATABASE_URI,
             echo=config.SQLALCHEMY_ECHO,
-            # ensure we are using the latest SQLAlchemy 2.0-style APIs
-            future=True,
             pool_pre_ping=True,
             **config.SQLALCHEMY_ENGINE_OPTIONS,
         )
 
-        self.session_factory = sessionmaker(
+        self.session_factory = async_sessionmaker(
             bind=self.engine,
             class_=AsyncSession,
             autoflush=False,
