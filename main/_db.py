@@ -11,7 +11,6 @@ from sqlalchemy.ext.asyncio import (
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import Response
-from starlette.types import ASGIApp
 
 from ._config import config
 
@@ -79,23 +78,19 @@ class Database:
         token = self.request_id_context.set(secrets.token_hex())
         self.scoped_session()
 
-        yield self
+        yield
 
         await self.scoped_session.remove()
         self.request_id_context.reset(token)
 
 
 class DBSessionMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app: ASGIApp, db: Database):
-        super().__init__(app)
-        self.db = db
-
     async def dispatch(
         self,
         request: Request,
         call_next: RequestResponseEndpoint,
     ) -> Response:
-        async with self.db.scope():
+        async with db.scope():
             response = await call_next(request)
 
         return response

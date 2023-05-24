@@ -24,7 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_middleware(DBSessionMiddleware, db=db)
+app.add_middleware(DBSessionMiddleware)
 app.add_middleware(AccessLogMiddleware)
 
 
