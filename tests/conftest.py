@@ -2,7 +2,7 @@ import asyncio
 import sys
 
 import pytest
-from fastapi.testclient import TestClient
+from httpx import AsyncClient
 
 from main import app, config, db
 from main.libs.log import get_logger
@@ -45,7 +45,6 @@ async def database():
 
 
 @pytest.fixture
-def client():
-    # Need to enter the context to invoke startup and shutdown events
-    with TestClient(app) as client:
+async def client():
+    async with AsyncClient(app=app, base_url="http://test") as client:
         yield client

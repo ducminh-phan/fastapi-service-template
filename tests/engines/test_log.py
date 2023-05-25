@@ -1,20 +1,9 @@
-from sqlalchemy import func, select
-
-from main import db
-from main.models.log import LogModel
+from main.engines.items import add_item, count_items
 
 
 async def test_log():
-    async def count_logs() -> int:
-        statement = select(func.count()).select_from(LogModel)
-        result = await db.session.execute(statement)
-        return result.scalar()
+    assert (await count_items()) == 0
 
-    assert (await count_logs()) == 0
+    await add_item()
 
-    db.session.add(LogModel(data={}))
-    await db.session.commit()
-
-    await db.session.scalars(statement=select(LogModel))
-
-    assert (await count_logs()) == 1
+    assert (await count_items()) == 1
