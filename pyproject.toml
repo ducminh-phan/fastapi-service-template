@@ -61,3 +61,19 @@ strict_optional = true
 
 [tool.bandit]
 skips = ["B101", "B105", "B107", "B301", "B403"]
+
+[tool.coverage.run]
+source = ["main"]
+concurrency = ["greenlet"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+    "@overload",
+]
