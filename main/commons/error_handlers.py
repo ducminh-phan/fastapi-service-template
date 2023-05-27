@@ -23,7 +23,7 @@ def register_error_handlers(app: FastAPI):
         return ValidationError(error_data=exc.errors()).to_response()
 
     @app.exception_handler(BaseError)
-    def handle_error(_, error: BaseError):
+    async def handle_error(_, error: BaseError):
         status_code = error.status_code
         if (
             isinstance(status_code, int)
@@ -43,7 +43,7 @@ def register_error_handlers(app: FastAPI):
         return error.to_response()
 
     @app.exception_handler(Exception)
-    def handle_exception(_, e):
+    async def handle_exception(_, e):
         logger.exception(str(e))
 
         return InternalServerError().to_response()
