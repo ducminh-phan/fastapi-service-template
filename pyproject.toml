@@ -8,20 +8,21 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-SQLAlchemy = { version = "^2.0.15", extras = ["asyncio"] }
+SQLAlchemy = { version = "^2.0.18", extras = ["asyncio"] }
 aiomysql = "^0.1.1"
-alembic = "^1.10.4"
-fastapi = "^0.95.1"
-pydantic = "^1.10.7"
+alembic = "^1.11.1"
+fastapi = "^0.95.2"
+pydantic = "^1.10.11"
 python-dotenv = "^1.0.0"
 uvicorn = "^0.22.0"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^7.2.5"
-httpx = "^0.24.0"
-pytest = "^7.3.1"
+coverage = "^7.2.7"
+httpx = "^0.24.1"
+pytest = "^7.4.0"
 pytest-asyncio = "^0.21.0"
-pytest-cov = "^4.0.0"
+pytest-cov = "^4.1.0"
+asgiref = "^3.7.2"
 
 [build-system]
 requires = ["poetry-core"]
@@ -35,9 +36,11 @@ select = [
     "E",
     "W",
     # isort
-    "I001",
+    "I",
     # flake8-print
     "T20",
+    # pyupgrade
+    "UP",
     # Ruff-specific rules
     "RUF",
 ]
@@ -58,6 +61,8 @@ max-complexity = 10
 [tool.mypy]
 ignore_missing_imports = true
 strict_optional = true
+follow_imports = "silent"
+check_untyped_defs = true
 
 [tool.bandit]
 skips = ["B101", "B105", "B107", "B301", "B403"]

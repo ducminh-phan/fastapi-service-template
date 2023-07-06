@@ -1,6 +1,9 @@
 import secrets
+from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
 from contextvars import ContextVar
+from functools import wraps
+from typing import ParamSpec, TypeVar
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -8,11 +11,15 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
-from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
-from starlette.requests import Request
-from starlette.responses import Response
 
 from ._config import config
+
+T = TypeVar("T")
+P = ParamSpec("P")
+
+
+def generate_request_id() -> str:
+    return secrets.token_hex()
 
 
 class Database:
@@ -58,8 +65,7 @@ class Database:
         )
 
     def _scope_func(self) -> str:
-        request_id = self.request_id_context.get()
-        return request_id
+        return self.request_id_context.get()
 
     @property
     def session(self) -> AsyncSession:
@@ -75,7 +81,7 @@ class Database:
         in request middleware.
         """
 
-        token = self.request_id_context.set(secrets.token_hex())
+        token = self.request_id_context.set(generate_request_id())
         self.scoped_session()
 
         yield
@@ -83,17 +89,13 @@ class Database:
         await self.scoped_session.remove()
         self.request_id_context.reset(token)
 
+    def with_scope(self, f: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[T]]:
+        @wraps(f)
+        async def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
+            async with self.scope():
+                return await f(*args, **kwargs)
 
-class DBSessionMiddleware(BaseHTTPMiddleware):
-    async def dispatch(
-        self,
-        request: Request,
-        call_next: RequestResponseEndpoint,
-    ) -> Response:
-        async with db.scope():
-            response = await call_next(request)
-
-        return response
+        return wrapper
 
 
 db = Database()
