@@ -37,9 +37,11 @@ async def database():
     transaction = await connection.begin()
 
     db.session_factory.configure(bind=connection)
+    db.scoped_session()
 
     yield
 
+    await db.scoped_session.remove()
     await transaction.rollback()
     await connection.close()
 
