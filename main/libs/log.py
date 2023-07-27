@@ -11,7 +11,7 @@ def get_logger(name: str):
 
     formatter = logging.Formatter(
         "[%(asctime)s][%(name)s][%(levelname)s]"
-        " (%(module)s:%(funcName)s:%(lineno)d) %(message)s"
+        " (%(module)s:%(funcName)s:%(lineno)d) %(message)s",
     )
 
     handler = logging.StreamHandler(stream=sys.stdout)

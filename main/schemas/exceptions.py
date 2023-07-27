@@ -4,6 +4,6 @@ from .base import BaseResponseSchema
 
 
 class ErrorSchema(BaseResponseSchema):
-    error_message: str | None
-    error_data: Any | None
-    error_code: int | None
+    error_message: str | None = None
+    error_data: Any | None = None
+    error_code: int | None = None

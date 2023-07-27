@@ -1,13 +1,15 @@
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel, ConfigDict
 
 
 class BaseResponseSchema(BaseModel):
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
 
 
 class BaseValidationSchema(BaseModel):
-    class Config:
-        extra = Extra.ignore
-        allow_mutation = False
-        anystr_strip_whitespace = True
+    model_config = ConfigDict(
+        extra="ignore",
+        frozen=True,
+        str_strip_whitespace=True,
+    )

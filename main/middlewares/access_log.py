@@ -139,7 +139,7 @@ class AccessLogAtoms(dict):
                 "L": request_time,
                 "p": f"<{os.getpid()}>",
                 "x_forwarded_for": get_x_forwarded_for(scope) or "-",
-            }
+            },
         )
 
     def __getitem__(self, key: str) -> str:

@@ -1,7 +1,7 @@
 import logging
 import os
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Config(BaseSettings):
@@ -12,9 +12,10 @@ class Config(BaseSettings):
     SQLALCHEMY_ENGINE_OPTIONS: dict = {}
     SQLALCHEMY_ECHO: bool = False
 
-    class Config:
-        case_sensitive = True
-        env_file_encoding = "utf-8"
+    model_config = SettingsConfigDict(
+        case_sensitive=True,
+        env_file_encoding="utf-8",
+    )
 
 
 environment = os.environ.get("ENVIRONMENT", "local")

@@ -11,8 +11,8 @@ BaseModel = declarative_base(
             "ix": "ix_%(column_0_N_name)s",
             "uq": "uq_%(table_name)s_%(column_0_N_name)s",
             "ck": "ck_%(table_name)s_%(column_0_N_name)s",
-        }
-    )
+        },
+    ),
 )
 
 
