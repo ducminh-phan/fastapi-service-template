@@ -1,0 +1,34 @@
+extends:
+  - "@commitlint/config-conventional"
+
+rules:
+  header-max-length:
+    - 2
+    - "always"
+    - 72
+  body-leading-blank:
+    - 2
+    - "always"
+  body-max-line-length:
+    - 2
+    - "always"
+    - 72
+  body-case:
+    - 2
+    - "always"
+    - "sentence-case"
+  footer-leading-blank:
+    - 2
+    - "always"
+  footer-max-line-length:
+    - 2
+    - "always"
+    - 72
+  subject-case:
+    - 2
+    - "always"
+    - "sentence-case"
+  type-case:
+    - 2
+    - "always"
+    - "lower-case"
