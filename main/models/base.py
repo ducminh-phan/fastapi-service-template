@@ -1,10 +1,11 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, MetaData
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import JSON, MetaData
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-BaseModel = declarative_base(
-    metadata=MetaData(
+
+class BaseModel(DeclarativeBase):
+    metadata = MetaData(
         naming_convention={
             "pk": "pk_%(table_name)s",
             "fk": "fk_%(table_name)s_%(column_0_N_name)s_%(referred_table_name)s",
@@ -12,18 +13,19 @@ BaseModel = declarative_base(
             "uq": "uq_%(table_name)s_%(column_0_N_name)s",
             "ck": "ck_%(table_name)s_%(column_0_N_name)s",
         },
-    ),
-)
+    )
+
+    type_annotation_map = {
+        dict: JSON,
+    }
 
 
 class TimestampMixin:
-    created_at = Column(
-        DateTime,
+    created_at: Mapped[datetime] = mapped_column(
         default=datetime.utcnow,
         nullable=False,
     )
-    updated_at = Column(
-        DateTime,
+    updated_at: Mapped[datetime] = mapped_column(
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
         nullable=False,
