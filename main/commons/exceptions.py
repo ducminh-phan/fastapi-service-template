@@ -62,7 +62,7 @@ class BaseError(Exception):
 
     def to_response(self):
         return JSONResponse(
-            ErrorSchema().from_orm(self).dict(),
+            ErrorSchema.model_validate(self).model_dump(mode="json"),
             self.status_code,
         )
 
