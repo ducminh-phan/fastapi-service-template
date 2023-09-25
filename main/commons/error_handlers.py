@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -20,7 +21,14 @@ def register_error_handlers(app: FastAPI):
 
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(_, exc: RequestValidationError):
-        return ValidationError(error_data=exc.errors()).to_response()
+        return ValidationError(
+            error_data=jsonable_encoder(
+                exc.errors(),
+                custom_encoder={
+                    Exception: str,
+                },
+            ),
+        ).to_response()
 
     @app.exception_handler(BaseError)
     async def handle_error(_, error: BaseError):
