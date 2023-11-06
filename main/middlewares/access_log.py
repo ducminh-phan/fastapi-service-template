@@ -73,13 +73,18 @@ class AccessLogMiddleware:
         async def wrapped_send(message: "ASGISendEvent"):
             if message["type"] == "http.response.start":
                 info["response"] = message
-                info["end_time"] = time.time()
-                self.log(scope, info)
 
             await send(message)
 
-        info["start_time"] = time.time()
-        await self.app(scope, receive, wrapped_send)
+        try:
+            info["start_time"] = time.time()
+            await self.app(scope, receive, wrapped_send)
+        except:
+            info["response"]["status"] = 500
+            raise
+        finally:
+            info["end_time"] = time.time()
+            self.log(scope, info)
 
     def log(self, scope: "HTTPScope", info: AccessInfo):
         self.logger.info(self.format, AccessLogAtoms(scope, info))
