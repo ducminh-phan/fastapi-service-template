@@ -20,7 +20,8 @@ class DBSessionMiddleware:
         send: "ASGISendCallable",
     ):
         if scope["type"] != "http":
-            return await self.app(scope, receive, send)  # pragma: no cover
+            await self.app(scope, receive, send)  # pragma: no cover
+            return
 
         from main import db
 

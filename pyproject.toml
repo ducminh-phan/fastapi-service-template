@@ -36,10 +36,18 @@ select = [
     "E", # Pycodestyle
     "W", # Pycodestyle
     "I", # isort
+    "ASYNC", # flake8-async
     "S", # flake8-bandit
     "COM", # flake8-commas
+    "C4", # flake8-comprehensions
     "ISC", # flake8-implicit-str-concat
+    "INP", # flake8-no-pep420
     "T20", # flake8-print
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+    "C90", # mccabe
+    "PERF", # perflint
     "UP", # pyupgrade
     "RUF", # Ruff-specific rules
 ]

@@ -66,7 +66,8 @@ class AccessLogMiddleware:
         send: "ASGISendCallable",
     ):
         if scope["type"] != "http":
-            return await self.app(scope, receive, send)  # pragma: no cover
+            await self.app(scope, receive, send)  # pragma: no cover
+            return
 
         info = AccessInfo(response={})
 
@@ -151,8 +152,8 @@ class AccessLogAtoms(dict):
         try:
             if key.startswith("{"):
                 return super().__getitem__(key.lower())
-            else:
-                return super().__getitem__(key)
+
+            return super().__getitem__(key)
         except KeyError:
             return "-"
 
