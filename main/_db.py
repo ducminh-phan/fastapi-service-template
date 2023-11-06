@@ -84,10 +84,12 @@ class Database:
         token = self.request_id_context.set(generate_request_id())
         self.scoped_session()
 
-        yield
+        try:
+            yield
 
-        await self.scoped_session.remove()
-        self.request_id_context.reset(token)
+        finally:
+            await self.scoped_session.remove()
+            self.request_id_context.reset(token)
 
     def with_scope(self, f: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[T]]:
         @wraps(f)
