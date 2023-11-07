@@ -1,8 +1,6 @@
 import secrets
-from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
 from contextvars import ContextVar
-from functools import wraps
 from typing import ParamSpec, TypeVar
 
 from sqlalchemy.ext.asyncio import (
@@ -90,14 +88,6 @@ class Database:
         finally:
             await self.scoped_session.remove()
             self.request_id_context.reset(token)
-
-    def with_scope(self, f: Callable[P, Awaitable[T]]) -> Callable[P, Awaitable[T]]:
-        @wraps(f)
-        async def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
-            async with self.scope():
-                return await f(*args, **kwargs)
-
-        return wrapper
 
 
 db = Database()
