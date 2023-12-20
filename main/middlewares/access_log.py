@@ -9,9 +9,8 @@ import logging
 import os
 import sys
 import time
+import urllib.parse
 from typing import TYPE_CHECKING, TypedDict
-
-from uvicorn.protocols.utils import get_client_addr, get_path_with_query_string
 
 if TYPE_CHECKING:
     from asgiref.typing import (
@@ -167,3 +166,19 @@ def get_x_forwarded_for(scope: "HTTPScope") -> str | None:
     x_forwarded_for_hosts = [item.strip() for item in x_forwarded_for.split(",")]
 
     return x_forwarded_for_hosts[-1] if x_forwarded_for_hosts else None
+
+
+def get_client_addr(scope: "HTTPScope"):
+    client = scope.get("client")
+    if not client:
+        return "-"  # pragma: no cover
+    return f"{client[0]}:{client[1]}"
+
+
+def get_path_with_query_string(scope: "HTTPScope") -> str:
+    path_with_query_string = urllib.parse.quote(
+        scope.get("root_path", "") + scope["path"],
+    )
+    if scope["query_string"]:  # pragma: no cover
+        return f"{path_with_query_string}?{scope['query_string'].decode('ascii')}"
+    return path_with_query_string
